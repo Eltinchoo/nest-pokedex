@@ -21,3 +21,8 @@ docker-compose up -d
 ## Stack utilizado
 * MongoDB
 * Nest
+
+5. Reconstruir la base de datos con la semilla 
+```
+http://localhost:3000/api/v2/seed
+```
