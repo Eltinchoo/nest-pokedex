@@ -6,18 +6,25 @@ import { Pokemon } from './entities/pokemon.entity';
 import { Model, isValidObjectId } from 'mongoose';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { log } from 'console';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PokemonService {
 
+  private defaultLimit: number;
 
   constructor(
 
     @InjectModel(Pokemon.name)
-    private readonly pokemonModel: Model<Pokemon>
-
+    
+    private readonly pokemonModel: Model<Pokemon>,
+    
+    private readonly configService: ConfigService
+  
   ) { 
-   console.log(process.env.DEFAULT_LIMIT);
+
+   this.defaultLimit = configService.get<number>('defaultLimit')
+  
    
   }
 
@@ -37,7 +44,7 @@ export class PokemonService {
 
   findAll( paginationDto:PaginationDto) {
     
-    const { limit = 5, offset = 0 } = paginationDto;
+    const { limit = this.defaultLimit, offset = 0 } = paginationDto;
     
     return this.pokemonModel.find()
       .limit( limit )
@@ -110,7 +117,7 @@ export class PokemonService {
     if (error.code === 11000) {
       throw new BadRequestException(`Pokemon exists in db ${JSON.stringify(error.keyValue)}`)
     }
-    console.log(error);
+   
     throw new InternalServerErrorException(`Can´t create Pokemon - Check server logs`);
   }
 }

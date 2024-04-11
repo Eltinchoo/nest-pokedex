@@ -13,7 +13,7 @@ import { EnvConfiguration } from './config/app.config';
   imports: [
     
     ConfigModule.forRoot({
-      load: [ EnvConfiguration ]
+      load: [ EnvConfiguration  ]
     }),
     
     ServeStaticModule.forRoot({
@@ -30,13 +30,6 @@ import { EnvConfiguration } from './config/app.config';
   SeedModule,
   ],
  })
- export class AppModule {
-
-  constructor  () {
-    console.log( process.env );
-    
-  }
-
- }
+ export class AppModule {}
 
 
